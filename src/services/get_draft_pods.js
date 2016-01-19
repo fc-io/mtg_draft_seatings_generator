@@ -120,7 +120,6 @@ const getSeatings = (players) => {
       seatings = getRandomSeatings(playersCopy)
       setSeatingRelations(playersCopy, seatings)
       highestRelationshipMargin = getHighestRelationshipMargin(playersCopy)
-      // console.log('highestRelationshipMargin', highestRelationshipMargin)
       sortedSeatings[highestRelationshipMargin] = _.cloneDeep(seatings)
       tries += 1
   }

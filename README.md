@@ -5,6 +5,7 @@
 With eight players playing multiple drafts against each other avoid players having to sit next to the same player multiple times during drafts.
 
 ## Demo
+http://fc-io.github.io/mtg_draft_seatings_generator/
 
 ## How to use
 
