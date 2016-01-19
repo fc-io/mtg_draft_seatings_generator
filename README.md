@@ -26,7 +26,7 @@ Make sure it works in develop mode, then use `npm build` to generate a static re
 
 ## Caveats
 
-Seating order is brute forced by generating random pods. Will be inefficient and not  reliable with large amount of drafts pods.
+This is a bit hacky and very imperative right now. Seating order is brute forced by generating random pods. Will be inefficient and not reliable with large amount of drafts pods. A message will tell if the draft pod generation was successful or not.
 
 ## Additional
 

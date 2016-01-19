@@ -19,7 +19,7 @@ const getShuffledPlayers = (array) => {
 }
 
 const getRandomSeatings = (players) => {
-  return getShuffledPlayers(_.cloneDeep(players))
+  return getShuffledPlayers(players)
 }
 
 const getLeftPlayerIndex = (playerIndex, seatings) => {
@@ -61,12 +61,14 @@ const setSeatingRelations = (players, seatings) => {
 }
 
 const getHighestRelationshipMargin = (players) => {
-  let leftLowest
-  let leftHighest
-  let rightLowest
-  let rightHighest
+  let highestMarginAmongstPLayers = 0
 
   _.each(players, (p) => {
+    let leftLowest
+    let leftHighest
+    let rightLowest
+    let rightHighest
+
     _.each(p.relations, (relation) => {
       if (!leftLowest || relation.left < leftLowest) {
         leftLowest = relation.left
@@ -84,41 +86,87 @@ const getHighestRelationshipMargin = (players) => {
         rightHighest = relation.right
       }
     })
+
+    let leftMargin = leftHighest - leftLowest
+    let rightMargin = rightHighest - rightLowest
+    let highestMargin = leftMargin > rightMargin ? leftMargin : rightMargin
+
+    if (highestMargin > highestMarginAmongstPLayers) {
+      highestMarginAmongstPLayers = highestMargin
+    }
   })
 
-  let leftMargin = leftHighest - leftLowest
-  let rightMargin = rightHighest - rightLowest
+  return highestMarginAmongstPLayers
+}
 
-  return leftMargin > rightMargin ? leftMargin : rightMargin
+const getLowestAmongstSortedSeatings = (sortedSeatings) => {
+  var lowestRelationshipMargin = _.first(_.sortBy(_.keys(sortedSeatings)))
+  return sortedSeatings[lowestRelationshipMargin]
+}
+
+const hasReachedTryLimit = (tries) => {
+  return tries > 99
 }
 
 const getSeatings = (players) => {
   let tries = 0
+  let sortedSeatings = {}
   let seatings
   let playersCopy
   let highestRelationshipMargin
 
-  while ((!highestRelationshipMargin || highestRelationshipMargin > 1) && tries < 100) {
+  while ((!highestRelationshipMargin || highestRelationshipMargin > 1) && !hasReachedTryLimit(tries)) {
       playersCopy = _.cloneDeep(players)
-      seatings = getRandomSeatings(players)
+      seatings = getRandomSeatings(playersCopy)
       setSeatingRelations(playersCopy, seatings)
       highestRelationshipMargin = getHighestRelationshipMargin(playersCopy)
-      console.log('highestRelationshipMargin', highestRelationshipMargin)
+      // console.log('highestRelationshipMargin', highestRelationshipMargin)
+      sortedSeatings[highestRelationshipMargin] = _.cloneDeep(seatings)
       tries += 1
   }
 
-  return seatings
+  return {
+    seatings: getLowestAmongstSortedSeatings(sortedSeatings),
+    success: !hasReachedTryLimit(tries)
+  }
+}
+
+const hasReachedPodTryLimit = (tries) => {
+  return tries > 9
 }
 
 export default (drafts, players) => {
-  return drafts.map((d) => {
-    const seatings = getSeatings(players)
-    console.log('seatings genrated for ', d.name)
-    setSeatingRelations(players, seatings)
+  let tries = 0
+  let success = false
+  let pods
 
-    return {
-      name: d.name,
-      seatings
+  while (!success && !hasReachedPodTryLimit(tries)) {
+    const playersCopy = _.cloneDeep(players)
+
+    pods = drafts.map((d) => {
+      const seatings = getSeatings(playersCopy)
+      setSeatingRelations(playersCopy, seatings.seatings)
+
+      return {
+        name: d.name,
+        seatings: seatings.seatings,
+        success: seatings.success
+      }
+    })
+
+    if (_.every(pods, (p) => {return p.success})) {
+      success = true
+
+      _.each(pods, (p) => {
+        setSeatingRelations(players, p.seatings)
+      })
     }
-  })
+
+    tries += 1
+  }
+
+  return {
+    pods,
+    success
+  }
 }
