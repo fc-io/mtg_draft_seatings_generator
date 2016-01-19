@@ -10,8 +10,8 @@ http://fc-io.github.io/mtg_draft_seatings_generator/
 ## How to use
 
 ### In Develop Mode
-Modify `resources/drafts.js` to label your drafts
-Modify `resources/players.js` to label your players. Notice that name is used as ids.
+* Modify `resources/drafts.js` to label your drafts.
+* Modify `resources/players.js` to label your players. Notice that name is used as ids.
 
 ```
 git clone [this repo]
