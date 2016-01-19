@@ -8,8 +8,14 @@ var getRandomInt = (min, max) => {
 var getNick = (nicks) => {
   return nicks[getRandomInt(0, nicks.length)]
 }
-export default ({nicks}) => {
+export default ({name, nicks, subheading}) => {
   return (
-    <div>{getNick(nicks)}</div>
+    <div>
+      {subheading ?
+        <div>{getNick(nicks)}</div> :
+        <div>{name} - {nicks.join(', ')}</div>
+      }
+    </div>
+
   )
 }
