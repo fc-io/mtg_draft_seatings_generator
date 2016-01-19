@@ -33,6 +33,8 @@ export class App extends Component {
   render() {
     return (
       <div>
+        <div># Draft pod generator for Magic: The Gathering</div>
+        <a href="https://github.com/fc-io/mtg_draft_seatings_generator">For instructions</a>
         <Players players={players} />
         <div><br/></div>
         <Drafts players={players} />
