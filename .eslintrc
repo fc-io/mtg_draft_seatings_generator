@@ -1,9 +1,11 @@
 {
+  "extends": "eslint:recommended",
   "ecmaFeatures": {
     "jsx": true,
     "modules": true
   },
   "env": {
+    "es6": true,
     "browser": true,
     "node": true
   },
@@ -11,11 +13,18 @@
   "rules": {
     "quotes": [2, "single"],
     "strict": [2, "never"],
+    "semi-spacing": [2, {"before": false, "after": false}],
+    "semi": [2, "never"],
+    "space-before-keywords": [2, "always"],
+    "object-curly-spacing": [2, "never"],
+    "no-const-assign": 2,
+
     "babel/generator-star-spacing": 1,
     "babel/new-cap": 1,
     "babel/object-shorthand": 1,
     "babel/arrow-parens": 1,
     "babel/no-await-in-loop": 1,
+
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2
