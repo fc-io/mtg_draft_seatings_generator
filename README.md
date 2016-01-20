@@ -2,7 +2,7 @@
 
 ## Goal
 
-With eight players drafts multiple times, avoid players having to sit next to the same player.
+With eight players drafting multiple times, avoid players having to sit next to the same player.
 
 ## Demo
 http://fc-io.github.io/mtg_draft_seatings_generator/
